@@ -6,250 +6,172 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: white;
       margin: 0;
       padding: 0;
-      color: white;
       text-align: center;
     }
-    header {
-      background: rgba(0, 0, 0, 0.7);
+    .container {
       padding: 20px;
-      font-size: 36px;
-      font-weight: bold;
     }
-    section {
-      background: rgba(0, 0, 0, 0.6);
-      margin: 20px auto;
-      padding: 30px;
-      border-radius: 12px;
-      width: 80%;
-      max-width: 700px;
-      font-size: 20px;
+    .step {
       display: none;
-    }
-    h2 {
-      font-size: 28px;
-      margin-bottom: 10px;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-size: 20px;
-      text-align: left;
-    }
-    input, select, button, textarea {
-      width: 100%;
-      padding: 12px;
-      margin-top: 8px;
-      font-size: 18px;
-      border-radius: 6px;
-      border: none;
+      margin: 20px auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      max-width: 600px;
     }
     button {
-      background: green;
+      background: #4CAF50;
       color: white;
-      cursor: pointer;
-      font-size: 20px;
-      margin-top: 20px;
-    }
-    #chatSection {
-      margin-top: 20px;
-    }
-    textarea {
-      width: 100%;
-      height: 150px;
-      font-size: 18px;
-      padding: 10px;
-    }
-    .wallet-box {
-      background: #222;
-      padding: 15px;
-      margin-top: 15px;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
       border-radius: 10px;
-      font-size: 18px;
-      word-break: break-all;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #45a049;
+    }
+    input, textarea {
+      padding: 10px;
+      margin: 10px;
+      width: 80%;
+      border-radius: 8px;
+      border: none;
+    }
+    .wallet {
+      background: rgba(0,0,0,0.3);
+      padding: 10px;
+      border-radius: 8px;
+      margin: 10px auto;
+      width: 80%;
+      word-wrap: break-word;
     }
   </style>
 </head>
 <body>
-  <header>
-    David Gilmour Management – Fan Connect
-  </header>
+  <div class="container">
+    <h1>Welcome to David Gilmour Management Fan Connect</h1>
 
-  <!-- Step 1: Short Chat -->
-  <section id="step1">
-    <h2>Step 1: Free Short Chat</h2>
-    <p>You can chat with the management for <strong>5 minutes</strong> for free. After that, please proceed to Step 2.</p>
-    <button onclick="startShortChat()">Start Live Chat</button>
-    <div id="shortChatMsg" style="margin-top:15px; font-size:18px; color:yellow;"></div>
-  </section>
+    <!-- Step 1 -->
+    <div id="step1" class="step">
+      <h2>Step 1: Start Live Chat</h2>
+      <p>Click below to chat directly with management for 5 minutes (free trial).</p>
+      <button onclick="startShortChat()">Start Live Chat</button>
+      <p><em>After 5 minutes, reload this page to continue to Step 2.</em></p>
+    </div>
 
-  <!-- Step 2: Management Code -->
-  <section id="step2">
-    <h2>Step 2: Enter Management Code</h2>
-    <input type="text" id="managementCodeInput" placeholder="Enter management code">
-    <button onclick="verifyManagementCode()">Submit Code</button>
-  </section>
+    <!-- Step 2 -->
+    <div id="step2" class="step">
+      <h2>Step 2: Enter Management Code</h2>
+      <input type="text" id="managementCode" placeholder="Enter management code">
+      <button onclick="verifyCode()">Submit Code</button>
+      <p id="codeMessage"></p>
+    </div>
 
-  <!-- Step 3: Payment -->
-  <section id="step3">
-    <h2>Step 3: Select Chat Option & Make Payment</h2>
-    <select id="paymentOption">
-      <option value="">-- Select Chat Type --</option>
-      <option value="100">30 Minutes Chat – $100</option>
-      <option value="250">1 Hour 30 Minutes Chat – $250</option>
-      <option value="1000">Voice/Video Call – $1,000</option>
-    </select>
-    <button onclick="makePayment()">Show Wallet</button>
-    <div id="paymentPage" style="display:none;">
-      <h2>Select Payment Method</h2>
-      <button onclick="showWallet('btc')">Pay with BTC</button>
-      <button onclick="showWallet('usdt')">Pay with USDT</button>
-      <div id="walletBox" class="wallet-box"></div>
+    <!-- Step 3 -->
+    <div id="step3" class="step">
+      <h2>Step 3: Make Payment</h2>
+      <p>Select your desired option and pay using the wallet addresses below:</p>
+      <ul style="text-align:left; display:inline-block;">
+        <li>30 minutes chat → <b>$100</b></li>
+        <li>1 hour 30 minutes chat → <b>$250</b></li>
+        <li>Voice/Video call → <b>$1,000</b></li>
+      </ul>
+      <div class="wallet">
+        <p><b>Bitcoin (BTC):</b> bc1ql35qu8wzlpc5cs5d7hgtk5srep48f7j0x27yr0 <button onclick="copyWallet('bc1ql35qu8wzlpc5cs5d7hgtk5srep48f7j0x27yr0')">Copy</button></p>
+        <p><b>Tron (TRX):</b> TVEKPhAMmXQwC7GR95UJrDV8DEboUHJBYW <button onclick="copyWallet('TVEKPhAMmXQwC7GR95UJrDV8DEboUHJBYW')">Copy</button></p>
+      </div>
       <button onclick="confirmPayment()">I Have Made Payment</button>
     </div>
-  </section>
 
-  <!-- Step 4: Submit Payment Details -->
-  <section id="step4">
-    <h2>Step 4: Submit Your Details</h2>
-    <form id="paymentForm">
-      <label for="name">Your Name:</label>
-      <input type="text" id="name" name="user_name" required>
+    <!-- Step 4 -->
+    <div id="step4" class="step">
+      <h2>Step 4: Submit Your Details</h2>
+      <textarea id="userDetails" placeholder="Enter your payment details (transaction ID, wallet address, etc.)"></textarea><br>
+      <button onclick="submitDetails()">Submit Details</button>
+    </div>
 
-      <label for="email">Your Email:</label>
-      <input type="email" id="email" name="user_email" required>
+    <!-- Step 5 -->
+    <div id="step5" class="step">
+      <h2>Step 5: Access Granted</h2>
+      <p>Thank you! Management will now grant you access. You can continue chatting via the chat bubble.</p>
+    </div>
+  </div>
 
-      <label for="reference">Payment Reference ID:</label>
-      <input type="text" id="reference" name="message" required placeholder="Enter your payment reference">
-
-      <button type="submit">Submit & Receive Access Code</button>
-    </form>
-  </section>
-
-  <!-- Step 5: Enter Access Code -->
-  <section id="step5">
-    <h2>Step 5: Enter Your Access Code</h2>
-    <input type="text" id="accessCode" placeholder="Enter code here">
-    <button onclick="verifyCode()">Unlock Chat</button>
-  </section>
-
-  <!-- Final Chat Section -->
-  <section id="chatSection">
-    <h2>Live Chat</h2>
-    <textarea placeholder="Start chatting..."></textarea>
-  </section>
-
-  <!-- EmailJS -->
-  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
-    (function(){
-      emailjs.init("uu8vvZMQLlVYT_YjA"); // Your public key
-    })();
-
-    // Reset everything on first visit
-    if(!localStorage.getItem("firstVisit")) {
-      localStorage.clear();
-      localStorage.setItem("firstVisit", "true");
+    function showStep(id) {
+      document.querySelectorAll('.step').forEach(step => step.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
     }
 
-    let generatedCode = "";
-    let managementCode = "MGMT2025"; // Change this to whatever you want
-
-    function startShortChat(){
-      document.getElementById("shortChatMsg").innerText =
-        "✅ Chat bubble is now active below. Please click it to talk with management.";
-      Tawk_API.showWidget();
-
-      // End after 5 mins
-      setTimeout(() => {
-        localStorage.setItem("shortChatEnded", "true");
-        Tawk_API.hideWidget();
-        alert("⏳ Free chat ended. Reload the page to continue to Step 2.");
-      }, 5 * 60 * 1000);
+    function startShortChat() {
+      localStorage.setItem("shortChatStartTime", Date.now());
+      localStorage.setItem("shortChatEnded", "false");
+      alert("Live chat started! Use the green bubble below to chat with management.");
     }
 
-    function verifyManagementCode(){
-      let input = document.getElementById("managementCodeInput").value;
-      if(input === managementCode) {
-        localStorage.setItem("managementCodeVerified", "true");
-        alert("✅ Correct! Reload the page to continue to Step 3.");
+    function checkStepProgress() {
+      const startTime = localStorage.getItem("shortChatStartTime");
+
+      if (startTime) {
+        const elapsed = Date.now() - parseInt(startTime);
+        if (elapsed >= 5 * 60 * 1000) {
+          localStorage.setItem("shortChatEnded", "true");
+        }
+      }
+
+      if (localStorage.getItem("shortChatEnded") === "true") {
+        if (localStorage.getItem("managementCodeVerified") === "true") {
+          if (localStorage.getItem("paymentDone") === "true") {
+            if (localStorage.getItem("detailsSubmitted") === "true") {
+              showStep("step5");
+              if (window.Tawk_API) Tawk_API.showWidget();
+            } else {
+              showStep("step4");
+            }
+          } else {
+            showStep("step3");
+          }
+        } else {
+          showStep("step2");
+        }
       } else {
-        alert("❌ Invalid code.");
+        showStep("step1");
       }
     }
-
-    function makePayment() {
-      let option = document.getElementById("paymentOption").value;
-      if(option) {
-        document.getElementById("paymentPage").style.display = "block";
-        window.scrollTo(0,document.body.scrollHeight);
-      } else {
-        alert("Select a chat option first.");
-      }
-    }
-
-    function showWallet(type) {
-      let walletBox = document.getElementById("walletBox");
-      if(type === "btc") {
-        walletBox.innerHTML =
-          "<strong>Send BTC to:</strong><br><input type='text' value='bc1ql35qu8wzlpc5cs5d7hgtk5srep48f7j0x27yr0' readonly style='width:100%; padding:8px;' onclick='this.select();document.execCommand(\"copy\");alert(\"BTC Address Copied!\")'>";
-      } else {
-        walletBox.innerHTML =
-          "<strong>Send USDT to:</strong><br><input type='text' value='TVEKPhAMmXQwC7GR95UJrDV8DEboUHJBYW' readonly style='width:100%; padding:8px;' onclick='this.select();document.execCommand(\"copy\");alert(\"USDT Address Copied!\")'>";
-      }
-    }
-
-    function confirmPayment(){
-      localStorage.setItem("paymentDone", "true");
-      alert("✅ Payment confirmed. Reload the page to continue to Step 4.");
-    }
-
-    document.getElementById("paymentForm").addEventListener("submit", function(event) {
-      event.preventDefault();
-      generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-
-      let templateParams = {
-        user_name: document.getElementById("name").value,
-        user_email: document.getElementById("email").value,
-        message: document.getElementById("reference").value + " | Your Access Code: " + generatedCode
-      };
-
-      emailjs.send("service_offzcjp", "template_5bcdhpd", templateParams)
-        .then(function(response) {
-          localStorage.setItem("detailsSubmitted", "true");
-          alert("✅ Details submitted! Reload the page to continue to Step 5.");
-        }, function(error) {
-          alert("FAILED to send email. Try again. " + JSON.stringify(error));
-        });
-    });
 
     function verifyCode() {
-      let code = document.getElementById("accessCode").value;
-      if(code === generatedCode) {
-        document.getElementById("chatSection").style.display = "block";
-        Tawk_API.showWidget();
-        alert("✅ Access code correct! Final chat unlocked.");
+      const code = document.getElementById("managementCode").value;
+      if (code === "DG2025") {
+        localStorage.setItem("managementCodeVerified", "true");
+        document.getElementById("codeMessage").innerText = "Code accepted! Reloading...";
+        setTimeout(() => location.reload(), 1000);
       } else {
-        alert("❌ Invalid code.");
+        document.getElementById("codeMessage").innerText = "Invalid code.";
       }
     }
 
-    // Step handling
-    window.onload = function(){
-      if(localStorage.getItem("detailsSubmitted")) {
-        document.getElementById("step5").style.display = "block";
-      } else if(localStorage.getItem("paymentDone")) {
-        document.getElementById("step4").style.display = "block";
-      } else if(localStorage.getItem("managementCodeVerified")) {
-        document.getElementById("step3").style.display = "block";
-      } else if(localStorage.getItem("shortChatEnded")) {
-        document.getElementById("step2").style.display = "block";
-      } else {
-        document.getElementById("step1").style.display = "block";
-      }
+    function confirmPayment() {
+      localStorage.setItem("paymentDone", "true");
+      location.reload();
     }
+
+    function submitDetails() {
+      localStorage.setItem("detailsSubmitted", "true");
+      location.reload();
+    }
+
+    function copyWallet(address) {
+      navigator.clipboard.writeText(address).then(() => alert("Wallet address copied!"));
+    }
+
+    window.onload = checkStepProgress;
   </script>
 
   <!--Start of Tawk.to Script-->
@@ -264,7 +186,7 @@
       s0.parentNode.insertBefore(s1,s0);
     })();
 
-    // Show widget initially (fans can start short chat)
+    // Show widget initially (so fans can start short chat)
     Tawk_API.onLoad = function(){
         Tawk_API.showWidget();
     };
