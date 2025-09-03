@@ -52,7 +52,7 @@
       font-size: 20px;
       margin-top: 20px;
     }
-    #chatSection {
+    #shortChatSection, #paymentSection, #chatSection {
       display: none;
       margin-top: 20px;
     }
@@ -85,19 +85,31 @@
 
   <section>
     <h2>Welcome Fans 💚</h2>
-    <p>David Gilmour’s management team deeply appreciates your love and support.  
-    To chat with David or the management team, please select your chat option and provide your details.</p>
+    <p>You can first chat briefly with David’s management team.  
+    After the short session, a code will be provided to unlock payment options for full access.</p>
+    <button onclick="startShortChat()">Start Short Chat</button>
   </section>
 
-  <section>
+  <!-- Short Free Chat -->
+  <section id="shortChatSection">
+    <h2>Short Free Chat (Management Only)</h2>
+    <textarea placeholder="You can chat briefly..."></textarea>
+    <p><em>This session is limited. Management will provide you with a code to proceed.</em></p>
+    <label>Enter Management Code:</label>
+    <input type="text" id="managementCode" placeholder="Enter management code">
+    <button onclick="unlockPayment()">Unlock Payment Section</button>
+  </section>
+
+  <!-- Payment Options -->
+  <section id="paymentSection">
     <h2>Step 1: Select Chat Option</h2>
     <select id="paymentOption">
       <option value="">-- Select Chat Type --</option>
-      <option value="2000">30 Minutes Chat – $2,000</option>
-      <option value="3500">1 Hour 30 Minutes Chat – $3,500</option>
-      <option value="7000">Voice/Video Call – $7,000</option>
+      <option value="100">30 Minutes Chat – $100</option>
+      <option value="250">1 Hour 30 Minutes Chat – $250</option>
+      <option value="1000">Voice/Video Call – $1,000</option>
     </select>
-    <button onclick="makePayment()">Make Payment</button>
+    <button onclick="makePayment()">Proceed to Payment</button>
   </section>
 
   <!-- Payment Page -->
@@ -108,7 +120,8 @@
     <div id="walletBox" class="wallet-box"></div>
   </section>
 
-  <section>
+  <!-- Details Form -->
+  <section id="paymentFormSection">
     <h2>Step 2: Submit Your Details</h2>
     <form id="paymentForm">
       <label for="name">Your Name:</label>
@@ -124,29 +137,53 @@
     </form>
   </section>
 
+  <!-- Final Code Entry -->
   <section>
     <h2>Step 3: Enter Your Access Code</h2>
     <input type="text" id="accessCode" placeholder="Enter code here">
-    <button onclick="verifyCode()">Unlock Chat</button>
+    <button onclick="verifyCode()">Unlock Celebrity Chat</button>
+    <div id="copyCodeBox" style="display:none; margin-top:15px;">
+      <p><strong>Your Access Code:</strong> <span id="confirmedCode"></span></p>
+      <button onclick="copyAccessCode()">Copy Access Code</button>
+    </div>
   </section>
 
+  <!-- Full Chat -->
   <section id="chatSection">
-    <h2>Live Chat</h2>
-    <textarea placeholder="Start chatting..."></textarea>
+    <h2>Celebrity Chat</h2>
+    <textarea placeholder="Chatting with David..."></textarea>
   </section>
 
   <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){
-      emailjs.init("uu8vvZMQLlVYT_YjA"); // Your public key
+      emailjs.init("uu8vvZMQLlVYT_YjA"); // your public key
     })();
 
     let generatedCode = "";
+    let managementUnlockCode = "MGMT2025"; // management provides this manually
+    let selectedPrice = "";
+
+    function startShortChat() {
+      document.getElementById("shortChatSection").style.display = "block";
+      Tawk_API.showWidget();
+    }
+
+    function unlockPayment() {
+      let code = document.getElementById("managementCode").value;
+      if(code === managementUnlockCode){
+        document.getElementById("paymentSection").style.display = "block";
+        alert("Correct code! Payment options unlocked.");
+      } else {
+        alert("Invalid management code.");
+      }
+    }
 
     function makePayment() {
       let option = document.getElementById("paymentOption").value;
       if(option) {
+        selectedPrice = option; // save the selected price
         document.getElementById("paymentPage").style.display = "block";
         window.scrollTo(0,document.body.scrollHeight);
       } else {
@@ -157,10 +194,25 @@
     function showWallet(type) {
       let walletBox = document.getElementById("walletBox");
       if(type === "btc") {
-        walletBox.innerHTML = "<strong>Send BTC to:</strong><br>bc1ql3q2jen3qd567f084eth0h7vr8cx2cftpmur6u";
+        walletBox.innerHTML = `
+          <strong>Send BTC to:</strong><br>
+          <span id="btcWallet">bc1ql35qu8wzlpc5cs5d7hgtk5srep48f7j0x27yr0</span>
+          <button onclick="copyWallet('btcWallet')">Copy</button>
+        `;
       } else {
-        walletBox.innerHTML = "<strong>Send USDT to:</strong><br>TVkLPyef8rhjscVqEzfq87aw7cTNu8udaQ";
+        walletBox.innerHTML = `
+          <strong>Send USDT to:</strong><br>
+          <span id="usdtWallet">TVEKPhAMmXQwC7GR95UJrDV8DEboUHJBYW</span>
+          <button onclick="copyWallet('usdtWallet')">Copy</button>
+        `;
       }
+    }
+
+    function copyWallet(id) {
+      let walletText = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(walletText).then(() => {
+        alert("Wallet address copied!");
+      });
     }
 
     document.getElementById("paymentForm").addEventListener("submit", function(event) {
@@ -170,7 +222,10 @@
       let templateParams = {
         user_name: document.getElementById("name").value,
         user_email: document.getElementById("email").value,
-        message: document.getElementById("reference").value + " | Your Access Code: " + generatedCode
+        message: 
+          "Payment Reference: " + document.getElementById("reference").value + 
+          " | Amount: $" + selectedPrice +
+          " | Your Celebrity Access Code: " + generatedCode
       };
 
       emailjs.send("service_offzcjp", "template_5bcdhpd", templateParams)
@@ -185,32 +240,45 @@
       let code = document.getElementById("accessCode").value;
       if(code === generatedCode) {
         document.getElementById("chatSection").style.display = "block"; 
-        Tawk_API.showWidget(); 
-        alert("Access code correct! Chat widget is now available in the bottom-right corner.");
+        document.getElementById("copyCodeBox").style.display = "block";
+        document.getElementById("confirmedCode").innerText = generatedCode;
+        alert("Access granted! You can now chat with David.");
+
+        // Auto-hide code box after 30 seconds
+        setTimeout(() => {
+          document.getElementById("copyCodeBox").style.display = "none";
+        }, 30000); 
       } else {
         alert("Invalid code.");
       }
     }
+
+    function copyAccessCode() {
+      let codeText = document.getElementById("confirmedCode").innerText;
+      navigator.clipboard.writeText(codeText).then(() => {
+        alert("Access code copied!");
+      });
+    }
   </script>
 
-  <!--Start of Tawk.to Script-->
+  <!-- Tawk.to -->
   <script type="text/javascript">
   var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
   (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/68a0948fa4fc79192a7c8dc2/1j2pk8kgl';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68a0948fa4fc79192a7c8dc2/1j2pk8kgl';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
   })();
 
-  // Hide widget initially
   Tawk_API.onLoad = function(){
-      Tawk_API.hideWidget();
+    Tawk_API.hideWidget(); // hidden until short chat starts
   };
   </script>
-  <!--End of Tawk.to Script-->
 </body>
 </html>
+
+
 
