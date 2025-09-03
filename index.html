@@ -207,11 +207,21 @@
         document.getElementById("chatInstruction").innerHTML = `
           <h2>⏳ Short Chat Ended</h2>
           <p>Your short chat with management has ended.  
-          Please enter the code given to you by management to continue.</p>
+          Please reload this page and enter the code given to you by management.</p>
         `;
-        document.getElementById("step2").style.display = "block";
+        // Save flag in localStorage
+        localStorage.setItem("shortChatEnded", "true");
       }, 300000); // 5 minutes
     }
+
+    // Check on page load
+    window.onload = function() {
+      if(localStorage.getItem("shortChatEnded") === "true") {
+        document.getElementById("step1").style.display = "none";
+        document.getElementById("chatInstruction").style.display = "none";
+        document.getElementById("step2").style.display = "block";
+      }
+    };
 
     function verifyManagementCode() {
       let code = document.getElementById("managementCode").value;
