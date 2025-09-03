@@ -1,67 +1,297 @@
-<!-- Step 1 -->
-<section id="step1">
-  <h2>Step 1: Start Short Live Chat</h2>
-  <button onclick="startShortChat()">Start Live Chat</button>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>David Gilmour Management - Fan Connect</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
+      margin: 0;
+      padding: 0;
+      color: white;
+      text-align: center;
+    }
+    header {
+      background: rgba(0, 0, 0, 0.7);
+      padding: 20px;
+      font-size: 36px;
+      font-weight: bold;
+    }
+    section {
+      background: rgba(0, 0, 0, 0.6);
+      margin: 20px auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 80%;
+      max-width: 700px;
+      font-size: 20px;
+    }
+    h2 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-size: 20px;
+      text-align: left;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      font-size: 18px;
+      border-radius: 6px;
+      border: none;
+    }
+    button {
+      background: green;
+      color: white;
+      cursor: pointer;
+      font-size: 20px;
+      margin-top: 20px;
+    }
+    #chatSection {
+      display: none;
+      margin-top: 20px;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      font-size: 18px;
+      padding: 10px;
+    }
+    #paymentPage {
+      display: none;
+      background: rgba(0,0,0,0.8);
+      padding: 20px;
+      border-radius: 12px;
+    }
+    .wallet-box {
+      background: #222;
+      padding: 15px;
+      margin-top: 15px;
+      border-radius: 10px;
+      font-size: 18px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    David Gilmour Management – Fan Connect
+  </header>
 
-<section id="chatInstruction" style="display:none; margin-top:20px;">
-  <h2>💬 Chat with Management</h2>
-  <p>Click the chat bubble at the bottom-right corner to start talking with our management team.  
-  After your short chat, you’ll be given a special code to continue.</p>
-</section>
+  <!-- Step 1 -->
+  <section id="step1">
+    <h2>Step 1: Start Short Live Chat</h2>
+    <button onclick="startShortChat()">Start Live Chat</button>
+  </section>
 
-<!-- Step 2 -->
-<section id="step2" style="display:none; margin-top:20px;">
-  <h2>Step 2: Enter Management Code</h2>
-  <input type="text" id="managementCode" placeholder="Enter code from management">
-  <button onclick="verifyManagementCode()">Submit Code</button>
-</section>
+  <section id="chatInstruction" style="display:none; margin-top:20px;">
+    <h2>💬 Chat with Management</h2>
+    <p>Click the chat bubble at the bottom-right corner to start talking with our management team.  
+    After your short chat, you’ll be given a special code to continue.</p>
+  </section>
 
-<!-- Payment Options -->
-<section id="paymentSection" style="display:none;">
-  <h2>Select Chat Option</h2>
-  <select id="paymentOption">
-    <option value="">-- Select Chat Type --</option>
-    <option value="100">30 Minutes Chat – $100</option>
-    <option value="250">1 Hour 30 Minutes Chat – $250</option>
-    <option value="3000">Voice/Video Call – $3,000</option>
-  </select>
-  <button onclick="makePayment()">Make Payment</button>
-</section>
+  <!-- Step 2 -->
+  <section id="step2" style="display:none; margin-top:20px;">
+    <h2>Step 2: Enter Management Code</h2>
+    <input type="text" id="managementCode" placeholder="Enter code from management">
+    <button onclick="verifyManagementCode()">Submit Code</button>
+  </section>
 
-<!-- Payment Page -->
-<section id="paymentPage" style="display:none;">
-  <h2>Select Payment Method</h2>
-  <button onclick="showWallet('btc')">Pay with BTC</button>
-  <button onclick="showWallet('usdt')">Pay with USDT</button>
-  <div id="walletBox" class="wallet-box"></div>
-</section>
+  <!-- Payment Options -->
+  <section id="paymentSection" style="display:none;">
+    <h2>Select Chat Option</h2>
+    <select id="paymentOption">
+      <option value="">-- Select Chat Type --</option>
+      <option value="100">30 Minutes Chat – $100</option>
+      <option value="250">1 Hour 30 Minutes Chat – $250</option>
+      <option value="3000">Voice/Video Call – $3,000</option>
+    </select>
+    <button onclick="makePayment()">Make Payment</button>
+  </section>
 
-<!-- Step 3 -->
-<section id="step3" style="display:none;">
-  <h2>Step 3: Submit Your Details</h2>
-  <form id="paymentForm">
-    <label for="name">Your Name:</label>
-    <input type="text" id="name" name="user_name" required>
+  <!-- Payment Page -->
+  <section id="paymentPage">
+    <h2>Select Payment Method</h2>
+    <button onclick="showWallet('btc')">Pay with BTC</button>
+    <button onclick="showWallet('usdt')">Pay with USDT</button>
+    <div id="walletBox" class="wallet-box"></div>
+  </section>
 
-    <label for="email">Your Email:</label>
-    <input type="email" id="email" name="user_email" required>
+  <!-- Step 3 -->
+  <section id="step3" style="display:none;">
+    <h2>Step 3: Submit Your Details</h2>
+    <form id="paymentForm">
+      <label for="name">Your Name:</label>
+      <input type="text" id="name" name="user_name" required>
 
-    <label for="reference">Payment Reference ID:</label>
-    <input type="text" id="reference" name="message" required placeholder="Enter your payment reference">
+      <label for="email">Your Email:</label>
+      <input type="email" id="email" name="user_email" required>
 
-    <button type="submit">Submit & Receive Access Code</button>
-  </form>
-</section>
+      <label for="reference">Payment Reference ID:</label>
+      <input type="text" id="reference" name="message" required placeholder="Enter your payment reference">
 
-<section id="accessCodeSection" style="display:none;">
-  <h2>Step 4: Enter Your Access Code</h2>
-  <input type="text" id="accessCode" placeholder="Enter code here">
-  <button onclick="verifyCode()">Unlock Chat</button>
-</section>
+      <button type="submit">Submit & Receive Access Code</button>
+    </form>
+  </section>
 
-<!-- Chat Section -->
-<section id="chatSection" style="display:none;">
-  <h2>Live Chat</h2>
-  <textarea placeholder="Start chatting..."></textarea>
-</section>
+  <section id="accessCodeSection" style="display:none;">
+    <h2>Step 4: Enter Your Access Code</h2>
+    <input type="text" id="accessCode" placeholder="Enter code here">
+    <button onclick="verifyCode()">Unlock Chat</button>
+  </section>
+
+  <!-- Chat Section -->
+  <section id="chatSection">
+    <h2>Live Chat</h2>
+    <textarea placeholder="Start chatting..."></textarea>
+  </section>
+
+  <!-- EmailJS -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("uu8vvZMQLlVYT_YjA"); // Your public key
+    })();
+
+    let generatedCode = "";
+    let managementCode = "MGMT2025"; // code management gives in short chat
+
+    function startShortChat() {
+      // Show Tawk.to widget
+      Tawk_API.showWidget();
+
+      // Hide step1
+      document.getElementById("step1").style.display = "none";
+
+      // Show instruction
+      document.getElementById("chatInstruction").style.display = "block";
+
+      // Auto-end chat after 5 minutes
+      setTimeout(() => {
+        Tawk_API.hideWidget();
+        document.getElementById("chatInstruction").innerHTML = `
+          <h2>⏳ Short Chat Ended</h2>
+          <p>Your short chat with management has ended.  
+          Please reload this page and enter the code given to you by management.</p>
+        `;
+        // Save flag in localStorage
+        localStorage.setItem("shortChatEnded", "true");
+      }, 300000); // 5 minutes
+    }
+
+    // Check on page load
+    window.addEventListener("load", function() {
+      if(localStorage.getItem("shortChatEnded") === "true") {
+        document.getElementById("step1").style.display = "none";
+        document.getElementById("chatInstruction").style.display = "none";
+        document.getElementById("step2").style.display = "block";
+      }
+    });
+
+    function verifyManagementCode() {
+      let code = document.getElementById("managementCode").value;
+      if(code === managementCode) {
+        document.getElementById("paymentSection").style.display = "block";
+        window.scrollTo(0,document.body.scrollHeight);
+      } else {
+        alert("Invalid code from management.");
+      }
+    }
+
+    function makePayment() {
+      let option = document.getElementById("paymentOption").value;
+      if(option) {
+        document.getElementById("paymentPage").style.display = "block";
+        document.getElementById("step3").style.display = "block";
+        window.scrollTo(0,document.body.scrollHeight);
+      } else {
+        alert("Select a chat option first.");
+      }
+    }
+
+    function showWallet(type) {
+      let walletBox = document.getElementById("walletBox");
+      if(type === "btc") {
+        walletBox.innerHTML = `
+          <strong>Send BTC to:</strong><br>
+          <span id="btcWallet">bc1ql35qu8wzlpc5cs5d7hgtk5srep48f7j0x27yr0</span>
+          <button onclick="copyWallet('btcWallet')">Copy</button>
+        `;
+      } else {
+        walletBox.innerHTML = `
+          <strong>Send USDT to:</strong><br>
+          <span id="usdtWallet">TVEKPhAMmXQwC7GR95UJrDV8DEboUHJBYW</span>
+          <button onclick="copyWallet('usdtWallet')">Copy</button>
+        `;
+      }
+    }
+
+    function copyWallet(id) {
+      let text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Wallet address copied!");
+      });
+    }
+
+    document.getElementById("paymentForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
+
+      let optionText = document.getElementById("paymentOption").options[document.getElementById("paymentOption").selectedIndex].text;
+
+      let templateParams = {
+        user_name: document.getElementById("name").value,
+        user_email: document.getElementById("email").value,
+        message: "Payment Ref: " + document.getElementById("reference").value +
+                 " | Option: " + optionText +
+                 " | Your Access Code: " + generatedCode
+      };
+
+      emailjs.send("service_offzcjp", "template_5bcdhpd", templateParams)
+        .then(function(response) {
+          alert("Details submitted! An access code has been sent to your email.");
+          document.getElementById("accessCodeSection").style.display = "block";
+          window.scrollTo(0,document.body.scrollHeight);
+        }, function(error) {
+          alert("FAILED to send email. Try again. " + JSON.stringify(error));
+        });
+    });
+
+    function verifyCode() {
+      let code = document.getElementById("accessCode").value;
+      if(code === generatedCode) {
+        document.getElementById("chatSection").style.display = "block"; 
+        Tawk_API.showWidget(); 
+        alert("Access code correct! Chat widget is now available in the bottom-right corner.");
+      } else {
+        alert("Invalid code.");
+      }
+    }
+  </script>
+
+  <!--Start of Tawk.to Script-->
+  <script type="text/javascript">
+  var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+  (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68a0948fa4fc79192a7c8dc2/1j2pk8kgl';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+  })();
+
+  // Hide widget initially
+  Tawk_API.onLoad = function(){
+    Tawk_API.hideWidget();
+  };
+  </script>
+  <!--End of Tawk.to Script-->
+
+</body>
+</html>
